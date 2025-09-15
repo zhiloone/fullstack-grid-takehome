@@ -99,7 +99,15 @@ Only attempt after completing 1-3:
 - [ ] **Error Handling** - #DIV/0!, #REF!, #CYCLE!
 - [ ] **Undo/Redo** - Basic history management
 
-## Setup
+## Getting Started
+
+### Fork and Submit
+
+1. **Fork this repository** to your GitHub account
+2. Complete the challenge in your forked repository
+3. When you're done, **send the link to your forked repo** to the person who gave you this challenge
+
+### Setup
 
 This project uses Bun for testing. Make sure you have Bun installed:
 ```bash
