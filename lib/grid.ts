@@ -2,15 +2,24 @@ import { CellAddress, toCellAddress } from '@/types';
 
 // Convert column index to letter(s) (0 -> A, 25 -> Z, 26 -> AA)
 export function colToLetter(col: number): string {
-  // TODO: Implement column index to letter conversion
-  // 0 -> A, 1 -> B, ..., 25 -> Z, 26 -> AA, 27 -> AB, etc.
-  throw new Error('Not implemented');
+  let result = '';
+  let n = col;
+  while (n >= 0) {
+    const remainder = n % 26;
+    result = String.fromCharCode(65 + remainder) + result;
+    n = Math.floor(n / 26) - 1;
+  }
+  return result;
 }
 
 // Convert letter(s) to column index (A -> 0, Z -> 25, AA -> 26)
 export function letterToCol(letters: string): number {
-  // TODO: Implement letter to column index conversion
-  throw new Error('Not implemented');
+  let result = 0;
+  for (let i = 0; i < letters.length; i++) {
+    result *= 26;
+    result += letters.charCodeAt(i) - 64; // 'A' = 65 → 1
+  }
+  return result - 1;
 }
 
 // Parse a cell address with absolute/relative refs ($A$1, A$1, $A1, A1)
@@ -20,8 +29,15 @@ export function parseAddress(addr: string): {
   absoluteCol: boolean;
   absoluteRow: boolean;
 } {
-  // TODO: Parse addresses like A1, $A$1, A$1, $A1
-  throw new Error('Not implemented');
+  const match = addr.match(/^(\$?)([A-Z]+)(\$?)(\d+)$/);
+  if (!match) throw new Error(`Invalid address: ${addr}`);
+  const [, colAbs, colLetters, rowAbs, rowNum] = match;
+  return {
+    col: letterToCol(colLetters),
+    row: parseInt(rowNum, 10) - 1,
+    absoluteCol: colAbs === '$',
+    absoluteRow: rowAbs === '$',
+  };
 }
 
 // Format a cell address with absolute/relative refs
@@ -31,17 +47,23 @@ export function formatAddress(
   absoluteCol: boolean = false,
   absoluteRow: boolean = false
 ): CellAddress {
-  // TODO: Format address with $ for absolute refs
-  throw new Error('Not implemented');
+  const colLetters = colToLetter(col);
+  const rowNum = row + 1;
+  const colPart = (absoluteCol ? '$' : '') + colLetters;
+  const rowPart = (absoluteRow ? '$' : '') + rowNum;
+  return toCellAddress(colPart + rowPart);
 }
-
 // Parse a range (A1:B3)
 export function parseRange(range: string): {
   start: CellAddress;
   end: CellAddress;
 } {
-  // TODO: Parse range string into start and end addresses
-  throw new Error('Not implemented');
+  const [start, end] = range.split(':');
+  if (!start || !end) throw new Error(`Invalid range: ${range}`);
+  return {
+    start: toCellAddress(start),
+    end: toCellAddress(end),
+  };
 }
 
 // Get all cells in a range
@@ -49,8 +71,21 @@ export function getCellsInRange(
   startAddr: CellAddress,
   endAddr: CellAddress
 ): CellAddress[] {
-  // TODO: Return all cell addresses in the rectangular range
-  throw new Error('Not implemented');
+  const start = parseAddress(startAddr);
+  const end = parseAddress(endAddr);
+
+  const minRow = Math.min(start.row, end.row);
+  const maxRow = Math.max(start.row, end.row);
+  const minCol = Math.min(start.col, end.col);
+  const maxCol = Math.max(start.col, end.col);
+
+  const result: CellAddress[] = [];
+  for (let c = minCol; c <= maxCol; c++) {
+    for (let r = minRow; r <= maxRow; r++) {
+      result.push(formatAddress(c, r));
+    }
+  }
+  return result;
 }
 
 // Adjust a cell reference when rows/columns are inserted or deleted

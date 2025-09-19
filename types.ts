@@ -1,20 +1,30 @@
+import { colToLetter, letterToCol } from "./lib/grid";
+
 // Branded type for cell addresses
 export type CellAddress = string & { __brand: 'CellAddress' };
 
 // Helper functions for CellAddress
 export const toCellAddress = (addr: string): CellAddress => {
-  // TODO: Validate format (e.g., A1, B12, AA99)
+  if (!/^\$?[A-Z]+\$?[1-9][0-9]*$/.test(addr)) {
+    throw new Error(`Invalid cell address: ${addr}`);
+  }
   return addr as CellAddress;
 };
 
 export const parseCellAddress = (addr: CellAddress): { col: number; row: number } => {
-  // TODO: Parse "A1" -> { col: 0, row: 0 }
-  throw new Error('Not implemented');
+  const match = addr.match(/^([A-Z]+)(\d+)$/);
+  if (!match) throw new Error(`Invalid cell address: ${addr}`);
+  const [, colLetters, rowNum] = match;
+  return {
+    col: letterToCol(colLetters),
+    row: parseInt(rowNum, 10) - 1,
+  };
 };
 
 export const formatCellAddress = (col: number, row: number): CellAddress => {
-  // TODO: Format { col: 0, row: 0 } -> "A1"
-  throw new Error('Not implemented');
+  const letters = colToLetter(col);
+  const num = row + 1;
+  return toCellAddress(`${letters}${num}`);
 };
 
 // Cell types (discriminated union)
