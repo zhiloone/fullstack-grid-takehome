@@ -139,46 +139,47 @@ After reviewing [paradigm.co](https://paradigm.co):
 ## Trade-offs & Reflection
 
 ### What I Prioritized
-1. TODO: Most important aspect?
-2. TODO: Second priority?
-3. TODO: Third priority?
+1. Navigating between cells and editing them were as close to Excel as I possibly could in the given time
+2. Ensuring the commit and abort logic would work as expected and would fire no more than once
+3. CSS styles, interface, UI, code structure
 
 ### What I Sacrificed
-1. TODO: What did you skip and why?
-2. TODO: What would you add with more time?
-3. TODO: What was harder than expected?
+1. I've skiped most of what was non-essential because I had to start from scratch a couple times because of wrong/uninformed decisions I made. First, I was trying to manage focus and selection across multiple components with no global state whatsoever. Then, I made it so that every cell was actually an input, and got lost while trying to effectively control its value. If I had researched what's the approach of the top sheets softwares before I'd have saved a lot of time. 
+2. I'd love working with the formulas logic if I had more time!
+3. Figuring out how to cycle between "navigation" and "edition" modes was the hardest. Events were being fired more than once accidentally, I was commiting values when they were supposed to only be aborted. Ensuring that stuff like e.g. focusing the grid automatically after commiting something took me way more time than it should aswell - it was a nice polishment, but nowhere as critical as other fundamental, basic requirements that were still pending at that time.
 
 ### Technical Debt
 **Shortcuts taken:**
-- TODO: What's not production-ready?
-- TODO: What would need refactoring?
-- TODO: Performance implications?
+- What's not production-ready? Pretty much everything but the sheets edit page.
+- What would need refactoring? Sheets edit page would most likely need some sort of global state to improve code quality
+- Performance implications? Everytime a cell is edited (commited), a request is made to the backend - even when its value has not changed. Besides just making that "before-after" check, performance could be improved by storing the last editions in memory and, periodically, make a single PATCH request with everything that was changed. Extras: display some sort of "saving" animation for the user, have a "save" button (force), making sure to save whatever's still in memory before closing the application etc.
 
 ### Proud Moments
 **What worked well:**
-- TODO: Best implementation detail?
-- TODO: Clever solution?
-- TODO: Clean abstraction?
+- Best implementation detail? Navigating and editing via the grid. Everything seems to be working. Cell's content is commited even when you click outside of the grid!
+- Clever solution? Realizing that only a single text input was needed and render it on top of the current cell being editted. Magical!
+- Clean abstraction? I liked creating more lib files with helper functions across other components, for example keyboard.ts, cell.ts.
 
 ### Learning Experience
 **What you learned:**
-- TODO: New technique discovered?
-- TODO: What surprised you?
-- TODO: What would you do differently?
+- New technique discovered? Yes" I've never had to learn about event bubbling before. Also, the whole e.preventDefault() thing was kind of new to me to be honest, I'm not gonna lie. I've had used it before, but it was for really specific scenarios (mostly exceptions to the rule).
+- What surprised you? The project's difficulty for me! It made me hit another one of those "lows" that us, developers, often face in our careers. I loved the challenge though! I'm still gonna work on it and improve until I get the hang of it - on my spare time, of course.
+- What would you do differently? I would spend more time methodically studying existing solutions and planning ahead. I think I've dived into coding too fast - hence all the drawbacks along the way.
 
 ## Time Breakdown
 
 **How you spent your time:**
-- Setup & Planning: ??? minutes
-- Core Functionality: ??? minutes  
-- Visual Design: ??? minutes
-- Formula Engine: ??? minutes
-- Testing & Polish: ??? minutes
-- Documentation: ??? minutes
+- Setup & Planning: 30 minutes
+- Core Functionality: 90 minutes  
+- Visual Design: 15 minutes
+- Formula Engine: 0 minutes
+- Testing & Polish: 90 minutes
+- Documentation: 15 minutes
 
 **If you had 1 more hour:**
-- TODO: What would you add/fix/improve?
+- What would you add/fix/improve? I would at least apply the same styles for the home page. That way, it wouldn't give that amateur feeling for the user right in the first page that they see...
 
 ## Final Notes
 
-TODO: Any additional thoughts, explanations, or context you want to share?
+I REALLY enjoyed doing this test. I've liked it so much that I'm still eager to keep working on it, just so I can improve and understand some new concepts better.
+I also think that having some sort of "entire-project-aware" IDE AI copilot would have been a HUGE help, since both the README.md and this file (DECISIONS.md) were written very thoroughly.
