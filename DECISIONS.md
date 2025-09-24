@@ -39,29 +39,29 @@ After reviewing [paradigm.co](https://paradigm.co):
 
 ### Cell Selection
 **How will selection work?**
-- TODO: Single click behavior?
-- TODO: Visual feedback (border, background, both)?
-- TODO: How will you show the active cell?
+- Single click behavior: just selects the cell
+- Visual feedback: faint background color on hover, strong border color on selection
+- The active cell will have its input enabled (blinking caret)
 
 ### Cell Editing
 **Your editing strategy:**
-- TODO: How does editing start? (double-click, F2, direct typing, all?)
-- TODO: What happens when user types directly?
-- TODO: How does editing end? (Enter, Tab, Esc, click away?)
-- TODO: Will you show different states for viewing vs editing?
+- Editing starts by either double-click, F2, or direct typing
+- When user types directily, the selected cell's content is wiped (draft)?
+- Editing ends when the user either presses "Enter" or "Tab" or when the user clicks away. If user presses "Escape", the edition is aborted
+- The only visual difference in cells being edited from those just being selected is the presence of a blinking caret (text input)
 
 ### Keyboard Navigation  
 **Which keys do what?**
-- TODO: Arrow keys behavior?
-- TODO: Tab/Shift+Tab?
-- TODO: Enter key (commit and move down, or just commit)?
-- TODO: Any shortcuts you're adding or skipping?
+- Arrow keys move between cells, no wrapping to next line/column
+- Tab and Shift+Tab moves the same way as right and left arrow keys, respectively, and also commits whatever is being edited
+- Pressing either Enter or Shift+Enter commits and moves the selected cell down or up, respectively
+- End and Home were also added, bringing the selection to the last and first item of the row respectively
 
 ### Technical Choices
 **How will you implement this?**
-- TODO: State management approach (useState, useReducer, context)?
-- TODO: How will you handle focus management?
-- TODO: Event handler strategy (bubbling vs individual)?
+- I'll first dump everything into page.tsx and manage states with useState. If I notice there's too much prop drilling after creating the required components, I'll consider using some sort of global state (context, zustand, redux)?
+- Focus will be handled at the top level of all components, "globally"
+- I'm ngl I've never had to learn what event bubbling was until this test lol. I wish I had before trying to code everything using the individual event handling strategy
 
 ## Priority 2: Visual Design Decisions
 
