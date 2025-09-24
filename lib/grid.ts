@@ -131,3 +131,11 @@ export function getNeighbor(
   // TODO: Return neighboring cell or null if at boundary
   throw new Error('Not implemented');
 }
+
+export function getColsCount(sheetCols: number, defaultCols: number = 10): number {
+  return Math.min(sheetCols, defaultCols);
+}
+
+export function getRowsCount(sheetRows: number, defaultRows: number = 20): number {
+  return Math.min(sheetRows, defaultRows);
+}

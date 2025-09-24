@@ -1,3 +1,82 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  /* Page wrapper */
+  .sheet-page {
+    @apply flex flex-col gap-4 p-4 bg-gray-50 min-h-screen;
+  }
+
+  /* Toolbar wrapper */
+  .sheet-toolbar {
+    @apply flex items-center justify-between;
+  }
+
+  /* Sheet title */
+  .sheet-title {
+    @apply text-xl font-semibold text-gray-800;
+  }
+
+  /* Toolbar actions */
+  .sheet-actions {
+    @apply flex gap-2;
+  }
+
+  /* Toolbar buttons */
+  .sheet-btn {
+    @apply px-3 py-1.5 text-sm rounded-md border border-gray-300 bg-white text-gray-700 shadow-sm
+           hover:bg-gray-100 active:bg-gray-200 transition;
+  }
+
+  /* Formula bar wrapper */
+  .formula-bar {
+    @apply flex items-center gap-2 border border-gray-300 rounded-md bg-white px-2 py-1 shadow-sm;
+  }
+
+  /* Selected cell address */
+  .formula-bar-address {
+    @apply w-16 text-center text-sm font-medium text-gray-700 border-r border-gray-300;
+  }
+
+  /* Input field */
+  .formula-bar-input {
+    @apply flex-1 p-2 text-sm outline-none bg-transparent;
+  }
+
+  /* Grid wrapper */
+  .sheet-table {
+    @apply border-collapse table-fixed w-full;
+  }
+
+  /* Header cells (row/col labels) */
+  .sheet-header {
+    @apply bg-gray-100 text-gray-700 font-medium text-sm text-center border border-gray-300;
+  }
+
+  /* Row number cells */
+  .sheet-row-header {
+    @apply bg-gray-50 text-gray-600 text-sm text-center border border-gray-300 w-12;
+  }
+
+  /* Regular cells */
+  .sheet-cell {
+    @apply border border-gray-300 w-24 h-8 px-2 text-sm text-left align-middle whitespace-nowrap;
+    @apply overflow-hidden whitespace-nowrap text-ellipsis;
+  }
+
+  /* Hover effect */
+  .sheet-cell:hover {
+    @apply bg-blue-50;
+  }
+
+  /* Selected state */
+  .sheet-cell-selected {
+    @apply ring-2 ring-blue-500 ring-inset outline-none;
+    @apply inset-0 w-full h-full;
+  }
+
+  .sheet-cell-input {
+    @apply outline-none w-full h-full
+  }
+}

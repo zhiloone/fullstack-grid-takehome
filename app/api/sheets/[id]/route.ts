@@ -11,8 +11,9 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
-    const sheet = sheetStore.get(params.id);
-    
+    const { id } = await params
+    const sheet = sheetStore.get(id);
+
     if (!sheet) {
       return NextResponse.json(
         { error: 'Sheet not found' },
@@ -37,8 +38,9 @@ export async function PATCH(
   { params }: { params: { id: string } }
 ) {
   try {
-    const sheet = sheetStore.get(params.id);
-    
+    const { id } = await params
+    const sheet = sheetStore.get(id);
+
     if (!sheet) {
       return NextResponse.json(
         { error: 'Sheet not found' },
@@ -48,7 +50,7 @@ export async function PATCH(
 
     const body = await request.json();
     const validation = validateRequest(SheetPatchSchema, body);
-    
+
     if (!validation.success) {
       return NextResponse.json(
         { error: validation.error },
@@ -57,11 +59,11 @@ export async function PATCH(
     }
 
     const { edits } = validation.data;
-    
+
     // Apply each edit to the sheet
     for (const edit of edits) {
       const addr = toCellAddress(edit.addr);
-      
+
       if (edit.kind === 'clear') {
         delete sheet.cells[addr];
       } else if (edit.kind === 'literal') {
@@ -90,10 +92,10 @@ export async function PATCH(
     }
 
     sheet.updatedAt = new Date();
-    sheetStore.update(params.id, sheet);
+    sheetStore.update(id, sheet);
 
     // TODO: Recalculate affected cells
-    
+
     return NextResponse.json(sheet);
   } catch (error) {
     return NextResponse.json(
